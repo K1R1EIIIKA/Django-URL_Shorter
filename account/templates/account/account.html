@@ -3,15 +3,22 @@
 {% block title %}Профиль{% endblock %}
 
 {% block content %}
-    <h1 class="text">срофиль</h1>
+    <h1 class="text">Профиль</h1>
     {% if user.is_authenticated %}
         <h1 class="text">Привет, {{ user.username }}</h1>
+        <br>
+        <h1 class="text">Изменить данные пользователя</h1>
+        <div class="form-account-change-user">
+            <form method="post">
+                {% csrf_token %}
+                <p class="form-control-text">Никнейм: <br>{{ form.username }}<br></p>
+                <p class="form-control-text">Почта: <br>{{ form.email }}<br></p>
+                <span>{{ error }}</span>
+                <button class="btn-account-change" type="submit">Обновить данные</button>
+            </form>
+        </div>
+        <br>
         <p class="text"><a class="text" style="color: #b2b2b2" href="{% url 'logout' %}?next=/">Выйти из аккаунта</a></p>
-        <p class="text"><a class="text" style="color: #b2b2b2" href="{% url 'links' %}">Доступные ссылки</a></p>
-
-        {{ player.username }}<br>
-        {{ player.email }}<br>
-        {{ player.date_created }}<br>
     {% else %}
         <p class="text">
             Вы не вошли в аккаунт!!!

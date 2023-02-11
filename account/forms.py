@@ -1,22 +1,19 @@
-from django.forms import TextInput, EmailInput, CharField, PasswordInput, ModelForm, URLInput
+from django.forms import TextInput, EmailInput, CharField, PasswordInput, ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
-from .models import Links
 
 
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'password1']
 
         widgets = {
             'username': TextInput(attrs={
                 'class': 'form-account-control',
-                'placeholder': 'Ваш игровой никнейм'
             }),
             'email': EmailInput(attrs={
                 'class': 'form-account-control',
-                'placeholder': 'Пример: huykekasa@gmail.com'
             }),
         }
 
@@ -24,7 +21,7 @@ class CreateUserForm(UserCreationForm):
         super(CreateUserForm, self).__init__(*args, **kwargs)
 
         self.fields['password1'].widget.attrs['class'] = 'form-account-control'
-        self.fields['password2'].widget.attrs['class'] = 'form-account-control'
+        del self.fields['password2']
 
 
 class Authenticate(AuthenticationForm):
@@ -35,28 +32,26 @@ class Authenticate(AuthenticationForm):
 
     username = UsernameField(widget=TextInput(
         attrs={'class': 'form-account-control',
-               'placeholder': 'ник'
                }))
     password = CharField(widget=PasswordInput(
         attrs={
             'class': 'form-account-control',
-            'placeholder': 'пароль',
         }))
 
 
-class CreateLink(ModelForm):
+class UserUpdateForm(ModelForm):
     class Meta:
-        model = Links
+        model = User
 
-        fields = ['full_link', 'short_link']
+        fields = ['username', 'email']
 
         widgets = {
-            'full_link': URLInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Полная ссылка'
+            'username': TextInput(attrs={
+                'class': 'form-account-control',
+                'placeholder': 'Введите имя пользователя'
             }),
-            'short_link': TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Сокращенная ссылка'
+            'email': EmailInput(attrs={
+                'class': 'form-account-control',
+                'placeholder': 'Введите почту'
             })
         }

@@ -1,0 +1,35 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Ссылки{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h1 class="text">Создание сокращенной ссылки</h1>
+        <div class="form-links-create">
+            <form method="post">
+                {% csrf_token %}
+                <p class="form-control-text">Полная ссылка: <br>{{ form.full_link }}<br></p>
+                <p class="form-control-text">Сокращенная ссылка: <br>{{ form.short_link }}<br></p>
+                <button class="btn-links-create" type="submit">Создать ссылку</button>
+                <span class="form-account-control" style="width: 100%">{{ error }}</span>
+            </form>
+        </div>
+        <br>
+        <h1 class="text">Доступные ссылки</h1>
+        {% for data in link %}
+            {% if data.author_id == user.id %}
+                <h3 class="text">Ссылка -
+                    <a class="text" style="color: #b2b2b2"
+                       href="{% url 'redirect' data.short_link %}">{{ data.short_link }}</a>
+                </h3>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p class="text">
+            Вы не вошли в аккаунт!!!
+            <a class="text" style="color: #b2b2b2" href="{% url 'login' %}">Войдите</a>
+            или
+            <a class="text" style="color: #b2b2b2" href="{% url 'register' %}">Создайте новый</a>
+        </p>
+    {% endif %}
+{% endblock %}
