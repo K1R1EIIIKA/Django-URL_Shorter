@@ -1,0 +1,23 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+    <h1 class="text">срофиль</h1>
+    {% if user.is_authenticated %}
+        <h1 class="text">Привет, {{ user.username }}</h1>
+        <p class="text"><a class="text" style="color: #b2b2b2" href="{% url 'logout' %}?next=/">Выйти из аккаунта</a></p>
+        <p class="text"><a class="text" style="color: #b2b2b2" href="{% url 'links' %}">Доступные ссылки</a></p>
+
+        {{ player.username }}<br>
+        {{ player.email }}<br>
+        {{ player.date_created }}<br>
+    {% else %}
+        <p class="text">
+            Вы не вошли в аккаунт!!!
+            <a class="text" style="color: #b2b2b2" href="{% url 'login' %}">Войдите</a>
+            или
+            <a class="text" style="color: #b2b2b2" href="{% url 'register' %}">Создайте новый</a>
+        </p>
+    {% endif %}
+{% endblock %}
